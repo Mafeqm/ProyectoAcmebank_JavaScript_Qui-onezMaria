@@ -5,14 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acme Bank</title>
     <link rel="stylesheet" href="CSS/style.css">
-    <script src="JS/script.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
     
+<!-- //inicio de sesion -->
+    <section id="view-login" class="view-section active">
+         <div class="auth-continer">
+            <div class="auth-card">
+                <h2>Bienvenido a Acme Bank</h2>
+                <p class="subtitle">Inicia sesion en tu cuenta</p>
+                <form id="form-group">
+                    <div class="form-gropu">
+                        <label for="login-id-type">Tipo de identificación *</label>
+                        <select id="login-id-type" required>
+                            <option value="">Seleccione</option>
+                            <option value="CC">Cedula de ciudadania (CC)</option>
+                            <option value="CE">Cedula de extranjeria (CE)</option>
+                            <option value="PASSPORT">Pasaporte</option>
+                        </select>
+                    </div>
+                    <div class="form-gropu">
+                        <label for="login-id-nombre">Numero de Identificacion *</label>
+                        <input type="text" id="login-id-number" required placeholder="********">
+                    </div>
+                    <div id="login-error" class="error-menssage hidden">No se pudo validar tu informacion. Verifique sus credenciales</div>
+                    <button type="submit">Iniciar sesion</button>
+                    <div class="auth-links">
+                        <a href="#" onclick="showView('view-register')">Crear cuenta bancaria</a>
+                        <a href="#" onclick="showView('view-recovery')">¿Olvide mi contraseña?</a>
+                    </div>
+                </form>
+            </div>
+         </div>
+    </section>
+
+    <!-- //Vista del registro -->
+    <section id="view-register" class="view-section hidden">
+        <div class="auth-container">
+            <div class="auth-card large-card">
+                <h2>Crea tu cuenta bancaria</h2>
+                <p class="subtitle">Ingresa tus datos personales</p>
+                <form id="form-register">
+                    <div class="grid-group">
+                        <div class="form-group">
+                            <label for="reg-id-type">Tipo de identificacion *</label>
+                            <select id="reg-id-type" required>
+                                <option value="CC">Cedula de ciudadania (CC)</option>
+                                <option value="CE">Cedula de extranjeria (CE)</option>
+                                <option value="PASSPORT">Pasaporte</option>
+                            </select>
+                        </div>
+                        <div class="form group">
+                            <label for="reg-id-number">Numero de Identificacion *</label>
+                            <input type="text" id="reg-id-number" required>
+                        </div>
+                        <div class="form-names">
+                            <label for="reg-id-names">Nombres *</label>
+                            <input type="text" id="reg-names" required>
+                        </div>
+                        <div>
+                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </section>
 
 
 
 
-    
 </body>
 </html>
