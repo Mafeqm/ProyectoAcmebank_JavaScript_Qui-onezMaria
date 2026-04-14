@@ -17,7 +17,7 @@
                 <h2>Bienvenido a Acme Bank</h2>
                 <p class="subtitle">Inicia sesion en tu cuenta</p>
                 <form id="form-group">
-                    <div class="form-gropu">
+                    <div class="form-group">
                         <label for="login-id-type">Tipo de identificación *</label>
                         <select id="login-id-type" required>
                             <option value="">Seleccione</option>
@@ -26,9 +26,13 @@
                             <option value="PASSPORT">Pasaporte</option>
                         </select>
                     </div>
-                    <div class="form-gropu">
+                    <div class="form-group">
                         <label for="login-id-nombre">Numero de Identificacion *</label>
-                        <input type="text" id="login-id-number" required placeholder="********">
+                        <input type="text" id="login-id-number" readonly placeholder="Ej: 123456789">
+                    </div>
+                    <div>
+                        <label for="login-password">Contraseña *</label>
+                        <input type="password" id="login-password" required placeholder="********">
                     </div>
                     <div id="login-error" class="error-menssage hidden">No se pudo validar tu informacion. Verifique sus credenciales</div>
                     <button type="submit">Iniciar sesion</button>
@@ -47,8 +51,7 @@
             <div class="auth-card large-card">
                 <h2>Crea tu cuenta bancaria</h2>
                 <p class="subtitle">Ingresa tus datos personales</p>
-                <form id="form-register">
-                    <div class="grid-group">
+                <form id="form-login">
                         <div class="form-group">
                             <label for="reg-id-type">Tipo de identificacion *</label>
                             <select id="reg-id-type" required>
@@ -61,22 +64,280 @@
                             <label for="reg-id-number">Numero de Identificacion *</label>
                             <input type="text" id="reg-id-number" required>
                         </div>
-                        <div class="form-names">
+                        <div class="form-group">
                             <label for="reg-id-names">Nombres *</label>
                             <input type="text" id="reg-names" required>
                         </div>
-                        <div>
-                            
+                        <div class="form-group">
+                            <label for="reg-id-surnames">Apellidos *</label>
+                            <input type="text" id="reg-surnames" required>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="reg-id-gender">Genero *</label>
+                            <select id="reg-gender" required>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                                <option value="O">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-telefono">Telefono *</label>
+                            <input type="text" id="reg-telefono" required>
+                        </div>
+                        <div class="form-group">    
+                            <label for="reg-email">Correo electronico *</label>
+                            <input type="email" id="reg-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-city">Ciudad de residencia *</label>
+                            <input type="text" id="reg-city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-address">Direccion de residencia *</label>
+                            <input type="text" id="reg-address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-password">Contraseña *</label>
+                            <input type="password" id="reg-password" required minlength="6" placeholder="Minimo 6 caracteres">
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="button btn-secondary" onclick="showView('view-login')">Cancelar</button>
+                            <button type="submit" class="button btn-primary">Crear cuenta</button>
+                        </div>
                 </form>
             </div>
-
         </div>
     </section>
 
+    <!-- Recuperacion de contraseña -->
+     <section id="view-recovery" class="view-section hidden">
+        <div class="auth-container">
+            <div class="card-container">
+                <h2>Recuperar contraseña</h2>
+                
+                <!-- validar identidad -->
+                 <form  id="form-recovery-step1">
+                    <p class="subtitle">Ingrese tus datos para buscar tu cuenta</p>
+                    <div class="form-group">
+                        <label for="rec-id-type">Tipo de identificacion *</label>
+                        <select id="rec-id-type" required>
+                            <option value="CC">Cedula de ciudadania (CC)</option>
+                            <option value="CE">Cedula de Extranjeria (CE)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rec-id-number">Numero de identificacion *</label>
+                        <input type="text" id="rec-id-number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rec-email">Correo electronico *</label>
+                        <input type="email" id="rec-email" required>
+                    </div>
+                    <div id="recovery-error" class="error-menssage hidden">No se pudo encontrar una cuenta con esa informacion. Verifique sus datos</div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Validar informacion</button>
+                    </div>
+                 </form>
 
+                 <!-- nueva contraseña -->
+                <form id="form-recovery-step2" class="hidden">
+                    <p>Ingresa tu nueva contraseña</p>
+                    <div class="form-group">
+                        <label for="rec-new-password">Nueva contraseña *</label>
+                        <input type="password" id="rec-new-password" required minlength="6" placeholder="Minimo 6 caracteres">
+                    </div>
+                    <div id="recovery-success" class="success-message hidden">Contraseña actualizada correctamente</div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="showView('view-login')">Volver al inicio</button>
+                        <button type="submit" class="btn btn-primary">Guardar contraseña</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+     </section>
 
+     <!-- panel principal -->
+    <section id="view-dashboard" class="view-section hidden">
+        <div class="dashboard-layout">
+            
+            <!-- BARRA LATERAL (MENU) -->
+            <aside class="sidebar">
+                <div class="brand">
+                    <h2>Acme Bank</h2>
+                </div>
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li><a href="#" onclick="showDashboardView('dash-home')" class="active" id="nav-dash-home">Inicio</a></li>
+                        <li><a href="#" onclick="showDashboardView('dash-transactions')" id="nav-dash-transactions">Resumen Transacciones</a></li>
+                        <li><a href="#" onclick="showDashboardView('dash-deposit')" id="nav-dash-deposit">Consignación</a></li>
+                        <li><a href="#" onclick="showDashboardView('dash-withdraw')" id="nav-dash-withdraw">Retiro de Dinero</a></li>
+                        <li><a href="#" onclick="showDashboardView('dash-services')" id="nav-dash-services">Pago Servicios</a></li>
+                        <li><a href="#" onclick="showDashboardView('dash-certificate')" id="nav-dash-certificate">Certificado Bancario</a></li>
+                    </ul>
+                </nav>
+                <div class="sidebar-footer">
+                    <button class="btn btn-outline" onclick="logout()">Cerrar Sesión</button>
+                </div>
+            </aside>
 
+            <!-- ÁREA DE CONTENIDO -->
+            <main class="dashboard-content">
+                
+                <!-- HOME DEL DASHBOARD (Resumen de cuenta) -->
+                <div id="dash-home" class="dash-view active">
+                    <h1 class="page-title">Hola, <span id="dash-user-name">Usuario</span></h1>
+                    
+                    <!-- Tarjeta estilizada del saldo -->
+                    <div class="balance-card">
+                        <div class="balance-info">
+                            <p class="balance-label">Saldo Actual</p>
+                            <h2 class="balance-amount" id="dash-balance">$0 COP</h2>
+                        </div>
+                        <div class="account-details">
+                            <p><strong>Cuenta:</strong> <span id="dash-account-number">---</span></p>
+                            <p><small>Creada el: <span id="dash-created-at">---</span></small></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESUMEN DE TRANSACCIONES -->
+                <div id="dash-transactions" class="dash-view hidden">
+                    <div class="header-with-action">
+                        <h1 class="page-title">Últimas Transacciones</h1>
+                        <button class="btn btn-secondary" onclick="imprimirZona('print-transactions')">Imprimir Resumen</button>
+                    </div>
+                    <div class="table-container" id="print-transactions">
+                        <div class="print-header hidden">Acme Bank - Resumen de Transacciones. Cuenta: <span class="print-account"></span></div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Referencia</th>
+                                    <th>Tipo</th>
+                                    <th>Concepto</th>
+                                    <th>Valor (COP)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-transactions-body">
+                                <!-- Las filas se insertan desde JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- CONSIGNACIÓN -->
+                <div id="dash-deposit" class="dash-view hidden">
+                    <h1 class="page-title">Consignación Electrónica</h1>
+                    <div class="action-card">
+                        <p class="info-text"><strong>Cuenta a consignar:</strong> <span class="session-account"></span></p>
+                        <p class="info-text"><strong>Titular:</strong> <span class="session-name"></span></p>
+                        
+                        <form id="form-deposit">
+                            <div class="form-group">
+                                <label for="dep-amount">Cantidad a consignar (COP) *</label>
+                                <input type="number" id="dep-amount" min="1" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Realizar Consignación</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- RETIRO -->
+                <div id="dash-withdraw" class="dash-view hidden">
+                    <h1 class="page-title">Retiro de Dinero</h1>
+                    <div class="action-card">
+                        <p class="info-text"><strong>Cuenta de retiro:</strong> <span class="session-account"></span></p>
+                        <p class="info-text"><strong>Titular:</strong> <span class="session-name"></span></p>
+                        
+                        <form id="form-withdraw">
+                            <div class="form-group">
+                                <label for="wit-amount">Cantidad a retirar (COP) *</label>
+                                <input type="number" id="wit-amount" min="1" required>
+                            </div>
+                            <div id="wit-error" class="error-message hidden">Saldo insuficiente.</div>
+                            <button type="submit" class="btn btn-primary">Realizar Retiro</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- PAGO SERVICIOS -->
+                <div id="dash-services" class="dash-view hidden">
+                    <h1 class="page-title">Pago de Servicios Públicos</h1>
+                    <div class="action-card">
+                        <p class="info-text"><strong>Cuenta de origen:</strong> <span class="session-account"></span></p>
+                        
+                        <form id="form-services">
+                            <div class="form-group">
+                                <label for="srv-type">Servicio Público *</label>
+                                <select id="srv-type" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="Energía">Energía</option>
+                                    <option value="Agua">Agua</option>
+                                    <option value="Gas Natural">Gas Natural</option>
+                                    <option value="Internet">Internet</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="srv-ref">Referencia de Pago *</label>
+                                <input type="text" id="srv-ref" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="srv-amount">Valor a pagar (COP) *</label>
+                                <input type="number" id="srv-amount" min="1" required>
+                            </div>
+                            <div id="srv-error" class="error-message hidden">Saldo insuficiente para proceder.</div>
+                            <button type="submit" class="btn btn-primary">Pagar Servicio</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- CERTIFICADO BANCARIO -->
+                <div id="dash-certificate" class="dash-view hidden">
+                    <div class="header-with-action">
+                        <h1 class="page-title">Certificado Bancario</h1>
+                        <button class="btn btn-secondary" onclick="imprimirZona('print-certificate')">Imprimir Certificado</button>
+                    </div>
+                    
+                    <div class="certificate-container" id="print-certificate">
+                        <div class="cert-header">
+                            <h2>Acme Bank</h2>
+                            <p>El banco que te acompaña</p>
+                        </div>
+                        <div class="cert-body">
+                            <h3>CERTIFICA QUE:</h3>
+                            <p>El/La Sr/Sra. <strong class="session-name"></strong> identificado(a) con número <strong><span id="cert-id"></span></strong>, tiene con nosotros una cuenta bancaria activa.</p>
+                            <ul>
+                                <li><strong>Tipo de Cuenta:</strong> Cuenta de Ahorros Autogestionada</li>
+                                <li><strong>Número de Cuenta:</strong> <span class="session-account"></span></li>
+                                <li><strong>Fecha de Creación:</strong> <span id="cert-date"></span></li>
+                            </ul>
+                            <p>Este certificado se genera de forma virtual a solicitud del cliente.</p>
+                            <p>Atentamente,</p>
+                            <p><strong>Gerencia de Cuentas - Acme Bank</strong></p>
+                        </div>
+                        <div class="cert-footer">
+                            <p>Documento generado el: <span id="cert-current-date"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </section>
+
+        <!-- Zona para un "Modal" de comprobantes y alertas genéricas -->
+    <dialog id="receipt-modal" class="modal">
+        <div class="modal-content" id="print-receipt">
+            <h3 id="receipt-title">Comprobante</h3>
+            <div id="receipt-body"></div>
+            <div class="modal-actions no-print">
+                <button class="btn btn-secondary" onclick="cerrarModal()">Cerrar</button>
+                <button class="btn btn-primary" onclick="imprimirZona('print-receipt')">Imprimir</button>
+            </div>
+        </div>
+    </dialog>
+    <script src="/JS/app.js"></script>
+    <script src="/JS/data.js"></script>
 </body>
 </html>
