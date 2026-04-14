@@ -34,8 +34,13 @@
 }
 
 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     background-color: var(--bg-color);
     color: var(--text-color);
+    background-size: 400% 400%;
     line-height: 1.6;
 }
 
@@ -54,35 +59,222 @@ body {
 
 /* Sólo la sección activa se mostrará */
 .view-section.active {
-    display: block;
-    width: 100%; 
+    display: block; 
 }
 
 
 /* =========================================
    CONTENEDOR DE AUTENTICACIÓN (LOGIN/REGISTRO)
+   Diseño panel dual con overlay deslizante
 ========================================= */
 .auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    width: 100%;
     padding: 20px;
-    position: relative;
 }
 
+/* Wrapper principal: contiene ambos formularios y el overlay */
+.auth-wrapper {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+    width: 1050px;
+    max-width: 95%;
+    min-height: 580px;
+}
+
+/* ---- Paneles de formularios ---- */
+.auth-form-panel {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: all 0.6s ease-in-out;
+    overflow-y: auto;
+}
+
+.auth-form-panel h2 {
+    color: var(--primary-color);
+    margin-bottom: 3px;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.auth-form-panel .subtitle {
+    color: var(--text-light);
+    text-align: center;
+    margin-bottom: 12px;
+    font-size: 0.8rem;
+}
+
+/* Panel LOGIN (izquierda, visible por defecto) */
+.auth-login-panel {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+/* Panel REGISTRO (derecha, oculto por defecto) */
+.auth-register-panel {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+/* --- Estados cuando se activa el modo registro --- */
+.auth-wrapper.register-mode .auth-login-panel {
+    transform: translateX(100%);
+    opacity: 0;
+    z-index: 1;
+}
+
+.auth-wrapper.register-mode .auth-register-panel {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+}
+
+/* ---- Overlay deslizante (panel de color) ---- */
+.auth-overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+    border-radius: 0 16px 16px 0;
+}
+
+.auth-wrapper.register-mode .auth-overlay-container {
+    transform: translateX(-100%);
+    border-radius: 16px 0 0 16px;
+}
+
+.auth-overlay {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transition: transform 0.6s ease-in-out;
+    display: flex;
+}
+
+.auth-wrapper.register-mode .auth-overlay {
+    transform: translateX(50%);
+}
+
+/* Paneles individuales dentro del overlay */
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 3rem;
+    text-align: center;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    transition: transform 0.6s ease-in-out;
+}
+
+.logo-container-overlay svg {
+    width: 70px;
+    height: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.overlay-panel h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.overlay-panel p {
+    font-size: 1rem;
+    margin-bottom: 25px;
+    opacity: 0.9;
+    line-height: 1.5;
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.auth-wrapper.register-mode .overlay-left {
+    transform: translateX(0);
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.auth-wrapper.register-mode .overlay-right {
+    transform: translateX(20%);
+}
+
+/* Botón overlay (borde blanco, transparente) */
+.btn-overlay {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 10px 40px;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    letter-spacing: 0.5px;
+}
+
+.btn-overlay:hover {
+    background-color: rgba(255,255,255,0.15);
+    transform: scale(1.05);
+}
+
+/* ---- Inputs con ícono ---- */
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon input,
+.input-with-icon select {
+    width: 100%;
+    padding-right: 40px;
+}
+
+.input-icon {
+    position: absolute;
+    right: 12px;
+    font-size: 1rem;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Tarjeta de auth (usada en vista de recuperación) */
 .auth-card {
-    background: linear-gradient(135deg, var(--bg-color) 0%, #e2e8f0 100%);    padding: 2.5rem;
+    background-color: var(--card-bg);
+    padding: 2.5rem;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     width: 100%;
-    max-width: 400px; /* Tamaño para login normal */
-}
-
-/* Una tarjeta más ancha para el registro */
-.auth-card.large-card {
-    max-width: 700px;
+    max-width: 400px;
 }
 
 .auth-card h2 {
@@ -99,11 +291,28 @@ body {
     font-size: 0.9rem;
 }
 
+/* Enlace "Olvidaste tu contraseña" */
+.auth-forgot-link {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+.auth-forgot-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.auth-forgot-link a:hover {
+    text-decoration: underline;
+}
+
 /* =========================================
    FORMULARIOS
 ========================================= */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 6px;
     display: flex;
     flex-direction: column;
 }
@@ -112,7 +321,7 @@ body {
 .grid-form {
     display: grid;
     grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
-    gap: 15px;
+    gap: 5px 10px;
 }
 
 /* Forzamos a que algunos campos ocupen todo el ancho si es necesario */
@@ -121,17 +330,17 @@ body {
 }
 
 label {
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     font-weight: 600;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
     color: var(--text-color);
 }
 
 input, select {
-    padding: 10px 12px;
+    padding: 8px 10px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    font-size: 1rem;
+    font-size: 0.9rem;
     transition: border-color 0.3s;
 }
 
@@ -169,17 +378,22 @@ input:focus, select:focus {
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
-    transition: background-color 0.3s, transform 0.1s;
+    transition: all 0.3s ease;
     text-align: center;
 }
 
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
 .btn:active {
-    transform: scale(0.98); /* Efecto click */
+    transform: translateY(0) scale(0.98); /* Efecto click */
 }
 
 .btn-primary {
     background-color: var(--primary-color);
-    color: var(--text-on-dark);
+    color: white;
 }
 
 .btn-primary:hover {
@@ -254,16 +468,45 @@ input:focus, select:focus {
     display: flex;
     flex-direction: column;
     position: fixed; /* Lo fijamos a la izq */
+    left: 0;
+    top: 0;
     height: 100vh;
+    z-index: 50;
 }
 
 .brand {
-    padding: 20px;
+    padding: 25px 20px 20px;
     border-bottom: 1px solid var(--border-color);
     text-align: center;
+}
+
+/* Contenedor del Logo SVG */
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-container svg {
+    width: 60px;
+    height: auto;
+    margin-bottom: 5px;
+}
+
+.logo-container h2 {
     color: var(--primary-color);
-    font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
+    margin: 0;
+    letter-spacing: 2px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.logo-container p {
+    font-size: 0.55rem;
+    color: var(--primary-color);
+    letter-spacing: 2px;
+    margin: 0;
+    opacity: 0.8;
 }
 
 .sidebar-nav {
@@ -306,7 +549,7 @@ input:focus, select:focus {
     flex-grow: 1;
     margin-left: 250px; /* El ancho del sidebar para que no colapse */
     padding: 30px;
-    max-width: 1000px;
+    max-width: 1400px;
 }
 
 .page-title {
@@ -328,33 +571,115 @@ input:focus, select:focus {
    COMPONENTES DEL DASHBOARD
 ========================================= */
 
-/* TARJETA DE RESUMEN (HOME) */
+/* TARJETA DE RESUMEN (HOME) - Estilo tarjeta bancaria */
 .balance-card {
-    background: linear-gradient(135deg, #3d2b4d, #2a1d35);
-    color: var(--secondary-color);
-    border-radius: var(--border-radius);
-    padding: 30px;
-    box-shadow: 0 10px 15px rgba(94, 43, 77, 0.3);
+    background: linear-gradient(145deg, #1a1225 0%, var(--primary-color) 50%, var(--primary-dark) 100%);
+    color: white;
+    border-radius: 18px;
+    padding: 32px 38px;
+    box-shadow: 0 15px 35px rgba(61, 43, 77, 0.4), 0 5px 15px rgba(0,0,0,0.2);
     margin-top: 20px;
+    max-width: 900px;
+    min-height: 270px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    cursor: pointer;
+}
+
+.balance-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 25px 50px rgba(61, 43, 77, 0.5), 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* Brillo sutil en la tarjeta */
+.balance-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Fila superior: chip + marca */
+.card-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card-chip {
+    width: 40px;
+    height: 30px;
+    background: linear-gradient(135deg, #f6d365, #d4a630);
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+.card-brand {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    opacity: 0.9;
 }
 
 .balance-label {
-    font-size: 1rem;
-    opacity: 0.8;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .balance-amount {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+    font-size: 2rem;
+    margin-bottom: 12px;
     font-weight: 700;
 }
 
-.account-details {
+/* Número de cuenta estilo tarjeta */
+.card-number-row {
+    display: flex;
+    gap: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.card-dots {
+    opacity: 0.5;
+}
+
+.card-account-end {
+    letter-spacing: 2px;
+}
+
+/* Fila inferior: titular y fecha */
+.card-bottom-row {
     display: flex;
     justify-content: space-between;
-    border-top: 1px solid rgba(255,255,255,0.2);
-    padding-top: 15px;
-    font-size: 0.9rem;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 12px;
+}
+
+.card-detail-label {
+    font-size: 0.65rem;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-detail-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 2px;
 }
 
 /* HEADER CON BOTÓN A LA EXTREMA DERECHA */
@@ -368,9 +693,10 @@ input:focus, select:focus {
 /* FORMULARIOS DE TRASACCIONES */
 .action-card {
     background-color: var(--card-bg);
-    padding: 20px;
-    border-radius: var(--border-radius);
+    padding: 35px 40px;
+    border-radius: 14px;
     box-shadow: var(--shadow);
+    max-width: 1000px;
 }
 
 .info-text {
@@ -542,5 +868,87 @@ input:focus, select:focus {
     .dashboard-content {
         margin-left: 0;
         padding: 15px;
+    }
+
+    /* Auth panel dual en móvil: stack vertical */
+    .auth-wrapper {
+        min-height: auto;
+        width: 100%;
+    }
+
+    .auth-form-panel {
+        position: relative;
+        width: 100% !important;
+        padding: 2rem 1.5rem;
+    }
+
+    .auth-login-panel {
+        display: flex;
+    }
+
+    .auth-register-panel {
+        display: none;
+        opacity: 1;
+    }
+
+    .auth-wrapper.register-mode .auth-login-panel {
+        display: none;
+        transform: none;
+        opacity: 1;
+    }
+
+    .auth-wrapper.register-mode .auth-register-panel {
+        display: flex;
+        transform: none;
+    }
+
+    .auth-overlay-container {
+        position: relative;
+        left: 0;
+        width: 100%;
+        height: auto;
+        border-radius: 0 0 16px 16px;
+    }
+
+    .auth-wrapper.register-mode .auth-overlay-container {
+        transform: none;
+        border-radius: 16px 16px 0 0;
+        order: -1;
+    }
+
+    .auth-overlay {
+        left: 0;
+        width: 100%;
+        height: auto;
+    }
+
+    .auth-wrapper.register-mode .auth-overlay {
+        transform: none;
+    }
+
+    .overlay-panel {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 2rem 1.5rem;
+    }
+
+    .overlay-left {
+        display: none;
+        transform: none;
+    }
+
+    .overlay-right {
+        position: relative;
+        transform: none;
+    }
+
+    .auth-wrapper.register-mode .overlay-left {
+        display: flex;
+        transform: none;
+    }
+
+    .auth-wrapper.register-mode .overlay-right {
+        display: none;
     }
 }

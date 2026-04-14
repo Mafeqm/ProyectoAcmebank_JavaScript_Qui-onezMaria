@@ -1,170 +1,245 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acme Bank</title>
-    <link rel="stylesheet" href="CSS/style.css">
+    <!-- Incluimos Google Fonts (Inter) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-    
-<!-- //inicio de sesion -->
-    <section id="view-login" class="view-section active">
-         <div class="auth-continer">
-            <div class="auth-card">
-                <h2>Bienvenido a Acme Bank</h2>
-                <p class="subtitle">Inicia sesion en tu cuenta</p>
-                <form id="form-group">
-                    <div class="form-group">
-                        <label for="login-id-type">Tipo de identificación *</label>
-                        <select id="login-id-type" required>
-                            <option value="">Seleccione</option>
-                            <option value="CC">Cedula de ciudadania (CC)</option>
-                            <option value="CE">Cedula de extranjeria (CE)</option>
-                            <option value="PASSPORT">Pasaporte</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="login-id-nombre">Numero de Identificacion *</label>
-                        <input type="text" id="login-id-number" readonly placeholder="Ej: 123456789">
-                    </div>
-                    <div>
-                        <label for="login-password">Contraseña *</label>
-                        <input type="password" id="login-password" required placeholder="********">
-                    </div>
-                    <div id="login-error" class="error-menssage hidden">No se pudo validar tu informacion. Verifique sus credenciales</div>
-                    <button type="submit">Iniciar sesion</button>
-                    <div class="auth-links">
-                        <a href="#" onclick="showView('view-register')">Crear cuenta bancaria</a>
-                        <a href="#" onclick="showView('view-recovery')">¿Olvide mi contraseña?</a>
-                    </div>
-                </form>
-            </div>
-         </div>
-    </section>
 
-    <!-- //Vista del registro -->
-    <section id="view-register" class="view-section hidden">
+    <!-- =========================
+         VISTAS DE AUTENTICACIÓN
+    ========================== -->    <!-- VISTA: LOGIN + REGISTRO (Panel dual con transición) -->
+    <section id="view-auth" class="view-section active">
         <div class="auth-container">
-            <div class="auth-card large-card">
-                <h2>Crea tu cuenta bancaria</h2>
-                <p class="subtitle">Ingresa tus datos personales</p>
-                <form id="form-login">
-                        <div class="form-group">
-                            <label for="reg-id-type">Tipo de identificacion *</label>
-                            <select id="reg-id-type" required>
-                                <option value="CC">Cedula de ciudadania (CC)</option>
-                                <option value="CE">Cedula de extranjeria (CE)</option>
-                                <option value="PASSPORT">Pasaporte</option>
-                            </select>
+            <div class="auth-wrapper" id="auth-wrapper">
+
+                <!-- ========== PANEL IZQUIERDO: FORMULARIO LOGIN ========== -->
+                <div class="auth-form-panel auth-login-panel">
+                    <h2>Iniciar Sesión</h2>
+                    <p class="subtitle">Accede a tu cuenta bancaria</p>
+                    <form id="form-login">
+                        <div class="form-group input-icon-group">
+                            <label for="login-id-type">Tipo de Identificación *</label>
+                            <div class="input-with-icon">
+                                <select id="login-id-type" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="CC">Cédula de Ciudadanía (CC)</option>
+                                    <option value="CE">Cédula de Extranjería (CE)</option>
+                                    <option value="PASSPORT">Pasaporte</option>
+                                </select>
+                                <span class="input-icon">📋</span>
+                            </div>
                         </div>
-                        <div class="form group">
-                            <label for="reg-id-number">Numero de Identificacion *</label>
-                            <input type="text" id="reg-id-number" required>
+                        <div class="form-group input-icon-group">
+                            <label for="login-id-number">Número de Identificación *</label>
+                            <div class="input-with-icon">
+                                <input type="text" id="login-id-number" required placeholder="Ej: 123456789">
+                                <span class="input-icon">👤</span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="reg-id-names">Nombres *</label>
-                            <input type="text" id="reg-names" required>
+                        <div class="form-group input-icon-group">
+                            <label for="login-password">Contraseña *</label>
+                            <div class="input-with-icon">
+                                <input type="password" id="login-password" required placeholder="********">
+                                <span class="input-icon">🔒</span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="reg-id-surnames">Apellidos *</label>
-                            <input type="text" id="reg-surnames" required>
+                        <div class="auth-forgot-link">
+                            <a href="#" onclick="showView('view-recovery')">¿Olvidaste tu contraseña?</a>
                         </div>
-                        <div class="form-group">
-                            <label for="reg-id-gender">Genero *</label>
-                            <select id="reg-gender" required>
-                                <option value="M">Masculino</option>
-                                <option value="F">Femenino</option>
-                                <option value="O">Otro</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="reg-telefono">Telefono *</label>
-                            <input type="text" id="reg-telefono" required>
-                        </div>
-                        <div class="form-group">    
-                            <label for="reg-email">Correo electronico *</label>
-                            <input type="email" id="reg-email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="reg-city">Ciudad de residencia *</label>
-                            <input type="text" id="reg-city" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="reg-address">Direccion de residencia *</label>
-                            <input type="text" id="reg-address" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="reg-password">Contraseña *</label>
-                            <input type="password" id="reg-password" required minlength="6" placeholder="Minimo 6 caracteres">
+                        <div id="login-error" class="error-message hidden">No se pudo validar su identidad. Verifique sus credenciales.</div>
+                        <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+                    </form>
+                </div>
+
+                <!-- ========== PANEL DERECHO: FORMULARIO REGISTRO ========== -->
+                <div class="auth-form-panel auth-register-panel">
+                    <h2>Crear Cuenta</h2>
+                    <p class="subtitle">Ingresa tus datos personales</p>
+                    <form id="form-register">
+                        <div class="grid-form">
+                            <div class="form-group">
+                                <label for="reg-id-type">Tipo de ID *</label>
+                                <select id="reg-id-type" required>
+                                    <option value="CC">Cédula de Ciudadanía (CC)</option>
+                                    <option value="CE">Cédula de Extranjería (CE)</option>
+                                    <option value="PASSPORT">Pasaporte</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-id-number">Número de ID *</label>
+                                <input type="text" id="reg-id-number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-names">Nombres *</label>
+                                <input type="text" id="reg-names" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-surnames">Apellidos *</label>
+                                <input type="text" id="reg-surnames" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-gender">Género *</label>
+                                <select id="reg-gender" required>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
+                                    <option value="O">Otro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-phone">Teléfono *</label>
+                                <input type="text" id="reg-phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-email">Correo Electrónico *</label>
+                                <input type="email" id="reg-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-city">Ciudad de Residencia *</label>
+                                <input type="text" id="reg-city" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="reg-address">Dirección *</label>
+                                <input type="text" id="reg-address" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="reg-password">Contraseña *</label>
+                                <input type="password" id="reg-password" required minlength="6" placeholder="Mínimo 6 caracteres">
+                            </div>
                         </div>
                         <div class="form-actions">
-                            <button type="button" class="button btn-secondary" onclick="showView('view-login')">Cancelar</button>
-                            <button type="submit" class="button btn-primary">Crear cuenta</button>
+                            <button type="submit" class="btn btn-primary btn-block">Crear Cuenta</button>
                         </div>
-                </form>
+                    </form>
+                </div>
+
+                <!-- ========== OVERLAY DESLIZANTE ========== -->
+                <div class="auth-overlay-container">
+                    <div class="auth-overlay">
+                        <!-- Panel overlay izquierdo (se muestra cuando estamos en registro) -->
+                        <div class="overlay-panel overlay-left">
+                            <div class="logo-container-overlay">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M 20 80 V 45 A 30 30 0 0 1 80 45 V 80 H 75 V 45 A 25 25 0 0 0 25 45 V 80 Z" fill="#d4af37" />
+                                    <polygon points="50,25 25,45 75,45" fill="#d4af37" />
+                                    <rect x="23" y="47" width="54" height="4" fill="#d4af37" />
+                                    <rect x="28" y="53" width="6" height="20" fill="#d4af37" />
+                                    <rect x="40" y="53" width="6" height="20" fill="#d4af37" />
+                                    <rect x="54" y="53" width="6" height="20" fill="#d4af37" />
+                                    <rect x="66" y="53" width="6" height="20" fill="#d4af37" />
+                                    <rect x="23" y="75" width="54" height="6" fill="#d4af37" />
+                                </svg>
+                            </div>
+                            <h2>¡Hola, de nuevo!</h2>
+                            <p>¿Ya tienes una cuenta?</p>
+                            <button class="btn btn-overlay" id="btn-go-login">Iniciar Sesión</button>
+                        </div>
+                        <!-- Panel overlay derecho (se muestra cuando estamos en login) -->
+                        <div class="overlay-panel overlay-right">
+                            <div class="logo-container-overlay">
+                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M 20 80 V 45 A 30 30 0 0 1 80 45 V 80 H 75 V 45 A 25 25 0 0 0 25 45 V 80 Z" fill="#d4af37" />
+                                    <polygon points="50,25 25,45 75,45" fill="#d4af37" />
+                                    <rect x="23" y="47" width="54" height="4" fill="#d4af37" />
+                                    <rect x="28" y="53" width="6" height="20" fill="#d4af37" />
+                                    <rect x="40" y="53" width="6" height="20" fill="#d4af37" />
+                                    <rect x="54" y="53" width="6" height="20" fill="#d4af37" />
+                                    <rect x="66" y="53" width="6" height="20" fill="#d4af37" />
+                                    <rect x="23" y="75" width="54" height="6" fill="#d4af37" />
+                                </svg>
+                            </div>
+                            <h2>¡Bienvenido a Acme!</h2>
+                            <p>¿Aún no tienes cuenta?</p>
+                            <button class="btn btn-overlay" id="btn-go-register">Crear Cuenta</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Recuperacion de contraseña -->
-     <section id="view-recovery" class="view-section hidden">
+    <!-- VISTA: RECUPERACIÓN DE CONTRASEÑA -->
+    <section id="view-recovery" class="view-section hidden">
         <div class="auth-container">
-            <div class="card-container">
-                <h2>Recuperar contraseña</h2>
+            <div class="auth-card">
+                <h2>Recuperar Contraseña</h2>
                 
-                <!-- validar identidad -->
-                 <form  id="form-recovery-step1">
-                    <p class="subtitle">Ingrese tus datos para buscar tu cuenta</p>
+                <!-- PASO 1: Validar identidad -->
+                <form id="form-recovery-step1">
+                    <p class="subtitle">Ingresa tus datos para buscar tu cuenta</p>
                     <div class="form-group">
-                        <label for="rec-id-type">Tipo de identificacion *</label>
+                        <label for="rec-id-type">Tipo de Identificación *</label>
                         <select id="rec-id-type" required>
-                            <option value="CC">Cedula de ciudadania (CC)</option>
-                            <option value="CE">Cedula de Extranjeria (CE)</option>
+                            <option value="CC">Cédula de Ciudadanía (CC)</option>
+                            <option value="CE">Cédula de Extranjería (CE)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="rec-id-number">Numero de identificacion *</label>
+                        <label for="rec-id-number">Número de Identificación *</label>
                         <input type="text" id="rec-id-number" required>
                     </div>
                     <div class="form-group">
-                        <label for="rec-email">Correo electronico *</label>
+                        <label for="rec-email">Correo Electrónico *</label>
                         <input type="email" id="rec-email" required>
                     </div>
-                    <div id="recovery-error" class="error-menssage hidden">No se pudo encontrar una cuenta con esa informacion. Verifique sus datos</div>
+                    <div id="recovery-error" class="error-message hidden">Los datos no concuerdan con nuestros registros.</div>
                     <div class="form-actions">
-                        <button type="button" class="btn btn-secondary">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Validar informacion</button>
+                        <button type="button" class="btn btn-secondary" onclick="showView('view-login')">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Validar</button>
                     </div>
-                 </form>
+                </form>
 
-                 <!-- nueva contraseña -->
+                <!-- PASO 2: Nueva contraseña (Oculto inicialmente) -->
                 <form id="form-recovery-step2" class="hidden">
-                    <p>Ingresa tu nueva contraseña</p>
+                    <p class="subtitle">Ingresa tu nueva contraseña</p>
                     <div class="form-group">
-                        <label for="rec-new-password">Nueva contraseña *</label>
-                        <input type="password" id="rec-new-password" required minlength="6" placeholder="Minimo 6 caracteres">
+                        <label for="rec-new-password">Nueva Contraseña *</label>
+                        <input type="password" id="rec-new-password" required minlength="6">
                     </div>
-                    <div id="recovery-success" class="success-message hidden">Contraseña actualizada correctamente</div>
+                    <div id="recovery-success" class="success-message hidden">Contraseña actualizada exitosamente.</div>
                     <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="showView('view-login')">Volver al inicio</button>
-                        <button type="submit" class="btn btn-primary">Guardar contraseña</button>
+                        <button type="button" class="btn btn-secondary" onclick="showView('view-login')">Volver al Inicio</button>
+                        <button type="submit" class="btn btn-primary" id="btn-save-new-password">Guardar Contraseña</button>
                     </div>
                 </form>
             </div>
         </div>
-     </section>
+    </section>
 
-     <!-- panel principal -->
+
+    <!-- =========================
+         DASHBOARD (PANEL PRINCIPAL)
+    ========================== -->
     <section id="view-dashboard" class="view-section hidden">
         <div class="dashboard-layout">
             
             <!-- BARRA LATERAL (MENU) -->
             <aside class="sidebar">
                 <div class="brand">
-                    <h2>Acme Bank</h2>
+                    <div class="logo-container">
+                        <!-- Logo bancario estilo clásico con pilares (color dorado) -->
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Arco exterior -->
+                            <path d="M 20 80 V 45 A 30 30 0 0 1 80 45 V 80 H 75 V 45 A 25 25 0 0 0 25 45 V 80 Z" fill="#d4af37" />
+                            <!-- Techo (triángulo y base) -->
+                            <polygon points="50,25 25,45 75,45" fill="#d4af37" />
+                            <rect x="23" y="47" width="54" height="4" fill="#d4af37" />
+                            <!-- Pilares -->
+                            <rect x="28" y="53" width="6" height="20" fill="#d4af37" />
+                            <rect x="40" y="53" width="6" height="20" fill="#d4af37" />
+                            <rect x="54" y="53" width="6" height="20" fill="#d4af37" />
+                            <rect x="66" y="53" width="6" height="20" fill="#d4af37" />
+                            <!-- Base inferior -->
+                            <rect x="23" y="75" width="54" height="6" fill="#d4af37" />
+                        </svg>
+                        <h2>ACME</h2>
+                        <p>TU BANCO DE CONFIANZA</p>
+                    </div>
                 </div>
                 <nav class="sidebar-nav">
                     <ul>
@@ -188,15 +263,38 @@
                 <div id="dash-home" class="dash-view active">
                     <h1 class="page-title">Hola, <span id="dash-user-name">Usuario</span></h1>
                     
-                    <!-- Tarjeta estilizada del saldo -->
+                    <!-- Tarjeta estilizada tipo tarjeta bancaria -->
                     <div class="balance-card">
+                        <!-- Fila superior: chip + logo banco -->
+                        <div class="card-top-row">
+                            <div class="card-chip"></div>
+                            <span class="card-brand">Acme Bank</span>
+                        </div>
+
+                        <!-- Saldo -->
                         <div class="balance-info">
                             <p class="balance-label">Saldo Actual</p>
                             <h2 class="balance-amount" id="dash-balance">$0 COP</h2>
                         </div>
-                        <div class="account-details">
-                            <p><strong>Cuenta:</strong> <span id="dash-account-number">---</span></p>
-                            <p><small>Creada el: <span id="dash-created-at">---</span></small></p>
+
+                        <!-- Número de cuenta estilo tarjeta -->
+                        <div class="card-number-row">
+                            <span class="card-dots">••••</span>
+                            <span class="card-dots">••••</span>
+                            <span class="card-dots">••••</span>
+                            <span class="card-account-end" id="dash-account-number">---</span>
+                        </div>
+
+                        <!-- Fila inferior: titular + fecha -->
+                        <div class="card-bottom-row">
+                            <div>
+                                <small class="card-detail-label">TITULAR</small>
+                                <p class="card-detail-value session-name">Usuario</p>
+                            </div>
+                            <div>
+                                <small class="card-detail-label">CREADA EL</small>
+                                <p class="card-detail-value" id="dash-created-at">---</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -326,7 +424,7 @@
         </div>
     </section>
 
-        <!-- Zona para un "Modal" de comprobantes y alertas genéricas -->
+    <!-- Zona para un "Modal" de comprobantes y alertas genéricas -->
     <dialog id="receipt-modal" class="modal">
         <div class="modal-content" id="print-receipt">
             <h3 id="receipt-title">Comprobante</h3>
@@ -337,7 +435,8 @@
             </div>
         </div>
     </dialog>
-    <script src="/JS/app.js"></script>
-    <script src="/JS/data.js"></script>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

@@ -1,10 +1,6 @@
 /**
  * data.js
  * Este archivo simula la persistencia en una "Base de Datos" JSON.
- * Ya que el navegador no nos permite sobrescribir archivos físicos .json directamente
- * mediante JS por razones de seguridad, utilizamos `localStorage`.
- * Al convertir datos (Objetos) a formato de texto JSON (JSON.stringify) y viceversa 
- * (JSON.parse), cumplimos con el requerimiento de guardar las estructuras como JSON.
  */
 
 // ==== CLAVES PARA EL LOCALSTORAGE ====
@@ -14,10 +10,7 @@ const TRANSACTIONS_KEY = "acme_transactions";
 
 // ==== FUNCIONES DE LECTURA (JSON.parse) ====
 
-/**
- * Lee y convierte el string JSON de LocalStorage a un arreglo (Array) de usuarios.
- * Si no existe, retorna un arreglo vacío [].
- */
+// Obtiene la lista de usuarios desde LocalStorage.
 function getUsers() {
     const data = localStorage.getItem(USERS_KEY);
     if (data) {
@@ -26,18 +19,13 @@ function getUsers() {
     return [];
 }
 
-/**
- * Lee el diccionario (Object) de cuentas (ej: {"1234567890": { balance: 500 }} )
- */
+// Obtiene el diccionario de cuentas desde LocalStorage.
 function getAccounts() {
     const data = localStorage.getItem(ACCOUNTS_KEY);
     return data ? JSON.parse(data) : {};
 }
 
-/**
- * Lee el diccionario de transacciones. Está mapeado por número de cuenta.
- * ej: {"1234567890": [ {fecha, tipo, monto} ] }
- */
+// Obtiene el historial de transacciones desde LocalStorage.
 function getTransactions() {
     const data = localStorage.getItem(TRANSACTIONS_KEY);
     return data ? JSON.parse(data) : {};
@@ -45,38 +33,34 @@ function getTransactions() {
 
 // ==== FUNCIONES DE ESCRITURA (JSON.stringify) ====
 
-/**
- * Convierte el objeto de datos a texto (String) y lo guarda en LocalStorage.
- * Esto "crea" o sobrescribe nuestro "archivo json virtual".
- */
+// Guarda la lista de usuarios en LocalStorage.
 function saveUsers(usersArray) {
     localStorage.setItem(USERS_KEY, JSON.stringify(usersArray));
 }
 
+// Guarda el diccionario de cuentas en LocalStorage.
 function saveAccounts(accountsObj) {
     localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accountsObj));
 }
 
+// Guarda las transacciones en LocalStorage.
 function saveTransactions(transactionsObj) {
     localStorage.setItem(TRANSACTIONS_KEY, JSON.stringify(transactionsObj));
 }
 
 // ==== FUNCIONES DEL NEGOCIO (LÓGICA DEL BANCO) ====
 
-/** Genera un número de cuenta aleatorio de 10 dígitos */
+// Genera un número de cuenta aleatorio de 10 dígitos.
 function generateAccountNumber() {
     return Math.floor(1000000000 + Math.random() * 9000000000).toString();
 }
 
-/** Genera un número de referencia aleatorio para la transacción */
+// Crea una referencia única aleatoria para cada transacción.
 function generateReference() {
     return 'REF-' + Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-/**
- * Registra un nuevo usuario en la Base de Datos json y le crea una cuenta en 0.
- * Retorna el usuario creado o false si hubo un error.
- */
+// Registra un usuario y crea su cuenta bancaria.
 function registerUser(userData) {
     const users = getUsers();
     
@@ -112,23 +96,20 @@ function registerUser(userData) {
     return userData;
 }
 
-/**
- * Busca al usuario por su tipo y número de ID y su contraseña
- * Retorna el usuario si los datos son correctos, si no retorna null.
- */
+// Valida credenciales e inicia sesión de un usuario.
 function loginUser(idType, idNumber, password) {
     const users = getUsers();
     const user = users.find(u => u.idType === idType && u.idNumber === idNumber && u.password === password);
     return user ? user : null;
 }
 
-/** Obtiene la cuenta en base a un numero de cuenta */
+// Trae los datos de saldo de una cuenta específica.
 function getAccountData(accountNumber) {
     const accounts = getAccounts();
     return accounts[accountNumber];
 }
 
-/** Formatea una cantidad en dinero Colombiano (COP) */
+// Da formato de moneda local (COP) a los números.
 function formatCurrency(amount) {
     // Usamos la API nativa de JavaScript (Intl) para formatear monedas fácilmente
     return new Intl.NumberFormat('es-CO', {
@@ -138,7 +119,7 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 
-/** Formatea una fecha a algo legible, ej: "10 de Abril, 2024" */
+// Ajusta las fechas a un formato de texto legible a nivel local.
 function formatDate(isoString) {
     const date = new Date(isoString);
     return date.toLocaleDateString('es-CO', { 
@@ -147,9 +128,7 @@ function formatDate(isoString) {
     });
 }
 
-/**
- * Añade una transacción y actualiza el saldo de la cuenta automáticamente
- */
+// Registra transacciones y actualiza el balance de la cuenta.
 function addTransaction(accountNumber, type, concept, value) {
     const accounts = getAccounts();
     const account = accounts[accountNumber];

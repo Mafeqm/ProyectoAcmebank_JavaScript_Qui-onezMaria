@@ -10,11 +10,19 @@ let currentUser = null;
 
 // ==== FUNCIONES DE NAVEGACIÓN (SPA) ====
 
-/**
- * Muestra una vista principal (Login, Registro, Dashboard, Recuperación)
- * y oculta las demás.
- */
+// Muestra una de las vistas principales (Login, Registro, etc.) y oculta las demás.
 function showView(viewId) {
+    // Mapear las vistas antiguas al nuevo contenedor unificado
+    const wrapper = document.getElementById('auth-wrapper');
+
+    if (viewId === 'view-login') {
+        viewId = 'view-auth';
+        if (wrapper) wrapper.classList.remove('register-mode');
+    } else if (viewId === 'view-register') {
+        viewId = 'view-auth';
+        if (wrapper) wrapper.classList.add('register-mode');
+    }
+
     // Busca todas las secciones que tengan la clase .view-section
     const views = document.querySelectorAll('.view-section');
     views.forEach(section => {
@@ -30,9 +38,7 @@ function showView(viewId) {
     }
 }
 
-/**
- * Cambia las vistas DENTRO del panel de control (Dashboard)
- */
+// Cambia la vista interna del Dashboard y actualiza el menú.
 function showDashboardView(viewId) {
     // Ocultar todas las sub-vistas
     const views = document.querySelectorAll('.dash-view');
@@ -56,10 +62,7 @@ function showDashboardView(viewId) {
     if(viewId === 'dash-transactions') loadTransactionsTable();
 }
 
-/** 
- * Actualiza todos los lugares donde dice "nombre de usuario" o "número de cuenta"
- * con los datos del usuario logueado en este momento.
- */
+// Llena los datos del usuario logueado en la interfaz (nombre y cuenta).
 function fillSessionDataDOM() {
     if(!currentUser) return;
     
@@ -105,11 +108,20 @@ document.getElementById('form-login').addEventListener('submit', function(e) {
     }
 });
 
-// Cerrar sesión
+// Cierra la sesión activa y vuelve al login.
 function logout() {
     currentUser = null;
     showView('view-login');
 }
+
+// ==== EVENTOS DE LOS BOTONES DE OVERLAY (Transición Login <-> Registro) ====
+document.getElementById('btn-go-register').addEventListener('click', function() {
+    document.getElementById('auth-wrapper').classList.add('register-mode');
+});
+
+document.getElementById('btn-go-login').addEventListener('click', function() {
+    document.getElementById('auth-wrapper').classList.remove('register-mode');
+});
 
 
 // --> Formulario de Registro
@@ -196,7 +208,7 @@ document.getElementById('form-recovery-step2').addEventListener('submit', functi
 
 // ==== FUNCIONES DEL DASHBOARD ====
 
-// Refresca la vista principal para mostrar el saldo de la cuenta actual
+// Carga y muestra los datos generales y saldo en el inicio del Dashboard.
 function loadDashboardHome() {
     if(!currentUser) return;
     
@@ -217,9 +229,7 @@ function loadDashboardHome() {
     document.getElementById('cert-current-date').textContent = formatDate(new Date().toISOString());
 }
 
-/** 
- * Actualiza la tabla (últimas 10 transacciones)
- */
+// Muestra las últimas 10 transacciones en la tabla del historial.
 function loadTransactionsTable() {
     if(!currentUser) return;
     const Tbody = document.getElementById('table-transactions-body');
@@ -258,7 +268,7 @@ function loadTransactionsTable() {
 
 // ==== TRANSACCIONES MANUALES ====
 
-// --> Función genérica para mostrar comprobantes Modal
+// Abre un modal mostrando los detalles de una transacción.
 function mostrarComprobante(tx) {
     const modal = document.getElementById('receipt-modal');
     const bdy = document.getElementById('receipt-body');
@@ -276,11 +286,12 @@ function mostrarComprobante(tx) {
     modal.showModal(); // API nativa de dialogos de HTML5
 }
 
+// Cierra el modal de comprobantes.
 function cerrarModal() {
     document.getElementById('receipt-modal').close();
 }
 
-/** Imprime un DIV en específico de la pantalla ocultando visualmente todo lo demás */
+// Abre la ventana de impresión para un área específica.
 function imprimirZona(elementId) {
     // Le decimos a todo el body que no aplique estilos normales a los que no tienen 'printable'
     document.body.classList.add('printing-mode');
