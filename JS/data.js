@@ -1,6 +1,7 @@
 /**
  * data.js
  * Este archivo simula la persistencia en una "Base de Datos" JSON.
+ * 
  */
 
 // ==== CLAVES PARA EL LOCALSTORAGE ====
